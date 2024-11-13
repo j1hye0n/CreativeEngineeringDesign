@@ -19,3 +19,4 @@ MonoBehaviour:
     nextScene: {fileID: 11400000, guid: 5a227718f9adde8459ae4099f6eafac6, type: 2}
   - text: Go for a walk
     nextScene: {fileID: 11400000, guid: 322cc1a5845dec844a3dab162f68e0ff, type: 2}
+  stressLevel: 0

@@ -21,20 +21,24 @@ public class ChooseController : MonoBehaviour
     {
         DestroyLabels();
         animator.SetTrigger("Show");
-        for(int index = 0; index < scene.labels.Count; index++)
+
+        // Use the GetVisibleChoices function to determine how many choices to show
+        int visibleChoices = scene.GetVisibleChoices();
+        
+        for (int index = 0; index < visibleChoices; index++)  // Loop based on the visible choices
         {
             ChooseLabelController newLabel = Instantiate(label.gameObject, transform).GetComponent<ChooseLabelController>();
 
-            if(labelHeight == -1)
+            if (labelHeight == -1)
             {
                 labelHeight = newLabel.GetHeight();
             }
 
-            newLabel.Setup(scene.labels[index], this, CalculateLabelPosition(index, scene.labels.Count));
+            newLabel.Setup(scene.labels[index], this, CalculateLabelPosition(index, visibleChoices));
         }
 
         Vector2 size = rectTransform.sizeDelta;
-        size.y = (scene.labels.Count + 2) * labelHeight;
+        size.y = (visibleChoices + 2) * labelHeight;  // Adjust the size based on the visible choices
         rectTransform.sizeDelta = size;
     }
 
@@ -46,9 +50,9 @@ public class ChooseController : MonoBehaviour
 
     private float CalculateLabelPosition(int labelIndex, int labelCount)
     {
-        if(labelCount %2 == 0)
+        if (labelCount % 2 == 0)
         {
-            if(labelIndex < labelCount / 2)
+            if (labelIndex < labelCount / 2)
             {
                 return labelHeight * (labelCount / 2 - labelIndex - 1) + labelHeight / 2;
             }
@@ -76,7 +80,7 @@ public class ChooseController : MonoBehaviour
 
     private void DestroyLabels()
     {
-        foreach(Transform childTransform in transform)
+        foreach (Transform childTransform in transform)
         {
             Destroy(childTransform.gameObject);
         }

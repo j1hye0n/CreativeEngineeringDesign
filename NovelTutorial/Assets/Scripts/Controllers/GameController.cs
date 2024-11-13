@@ -28,7 +28,7 @@ public class GameController : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
         {
             if (state == State.IDLE && bottomBar.IsCompleted())
             {
@@ -69,7 +69,7 @@ public class GameController : MonoBehaviour
         else if (scene is ChooseScene)
         {
             state = State.CHOOSE;
-            chooseController.SetupChoose(scene as ChooseScene);
+            chooseController.SetupChoose(scene as ChooseScene);  // Setup the ChooseScene with the new logic
         }
     }
 }
