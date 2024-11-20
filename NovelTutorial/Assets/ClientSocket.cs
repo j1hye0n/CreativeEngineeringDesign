@@ -14,6 +14,8 @@ public class ClientSocket : MonoBehaviour
     public String Host = "192.168.137.99"; // Replace with the server's IP
     public Int32 Port = 12345;
 
+    public int StressLevel = 0;  // The variable to update
+
     void Start()
     {
         setupSocket();
@@ -21,17 +23,8 @@ public class ClientSocket : MonoBehaviour
         {
             Debug.Log("Socket set up");
 
-            // Send message
-            Byte[] sendBytes = Encoding.UTF8.GetBytes("This is the client");
-            theStream.Write(sendBytes, 0, sendBytes.Length);
-
-            Debug.Log("Sent message. Waiting for response");
-
-            // Receive response
-            Byte[] readBytes = new byte[1024];
-            int numberOfBytesRead = theStream.Read(readBytes, 0, readBytes.Length);
-            string response = Encoding.ASCII.GetString(readBytes, 0, numberOfBytesRead);
-            Debug.Log("You received the following message: " + response);
+            // Start listening for StressLevelInput updates
+            StartCoroutine(ReceiveStressLevel());
         }
     }
 
@@ -58,10 +51,58 @@ public class ClientSocket : MonoBehaviour
 
     private void closeSocket()
     {
-        if (!socketReady) return;
-        theWriter.Close();
-        theReader.Close();
-        mySocket.Close();
-        socketReady = false;
+        // Ensure that all objects are initialized before closing
+        if (socketReady)
+        {
+            if (theWriter != null)
+            {
+                theWriter.Close();
+            }
+            if (theReader != null)
+            {
+                theReader.Close();
+            }
+            if (mySocket != null)
+            {
+                mySocket.Close();
+            }
+
+            socketReady = false;
+        }
+        else
+        {
+            Debug.LogWarning("Socket not initialized, skipping close.");
+        }
+    }
+
+    private System.Collections.IEnumerator ReceiveStressLevel()
+    {
+        while (socketReady)
+        {
+            try
+            {
+                // Read StressLevelInput from the server
+                Byte[] readBytes = new byte[1024];
+                int numberOfBytesRead = theStream.Read(readBytes, 0, readBytes.Length);
+                string response = Encoding.ASCII.GetString(readBytes, 0, numberOfBytesRead);
+
+                if (int.TryParse(response, out int stressLevelInput))
+                {
+                    StressLevel = stressLevelInput;  // Update StressLevel
+                    Debug.Log($"Updated StressLevel: {StressLevel}");
+                }
+                else
+                {
+                    Debug.LogWarning("Failed to parse StressLevelInput from server.");
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning("Error receiving StressLevelInput: " + e.Message);
+            }
+
+            // Wait for 1 second before the next read
+            yield return new WaitForSeconds(1f);
+        }
     }
 }

@@ -41,11 +41,11 @@
      <Compile Include="Assets\Scripts\Controllers\GameController.cs" />
      <Compile Include="Assets\Scripts\Controllers\SpriteSwitcher.cs" />
      <Compile Include="Assets\Scripts\Entities\Speaker.cs" />
-     <Compile Include="Assets\Scripts\Controllers\ChooseController.cs" />
      <Compile Include="Assets\Scripts\Controllers\SpriteController.cs" />
      <Compile Include="Assets\Scripts\Controllers\BottomBarController.cs" />
      <Compile Include="Assets\Scripts\Entities\ChooseScene.cs" />
      <Compile Include="Assets\Scripts\Controllers\ChooseLabelController.cs" />
+     <Compile Include="Assets\Scripts\Controllers\ChooseController.cs" />
      <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_SDF-Mobile Overlay.shader" />
      <None Include="Assets\TextMesh Pro\Shaders\TMP_Bitmap.shader" />
