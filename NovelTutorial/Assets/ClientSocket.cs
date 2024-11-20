@@ -51,28 +51,11 @@ public class ClientSocket : MonoBehaviour
 
     private void closeSocket()
     {
-        // Ensure that all objects are initialized before closing
-        if (socketReady)
-        {
-            if (theWriter != null)
-            {
-                theWriter.Close();
-            }
-            if (theReader != null)
-            {
-                theReader.Close();
-            }
-            if (mySocket != null)
-            {
-                mySocket.Close();
-            }
-
-            socketReady = false;
-        }
-        else
-        {
-            Debug.LogWarning("Socket not initialized, skipping close.");
-        }
+        if (!socketReady) return;
+        theWriter.Close();
+        theReader.Close();
+        mySocket.Close();
+        socketReady = false;
     }
 
     private System.Collections.IEnumerator ReceiveStressLevel()

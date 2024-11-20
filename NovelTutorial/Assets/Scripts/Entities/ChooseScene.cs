@@ -16,11 +16,11 @@ public class ChooseScene : GameScene
     }
 
     // Add this variable to control the number of choices shown
-    public int stressLevel = 0;  // Default stress level, modify as needed
+    public int StressLevel = 0;  // Default stress level, modify as needed
 
     // Function to get the number of choices to display based on StressLevel
     public int GetVisibleChoices()
     {
-        return stressLevel >= 50 ? 3 : 2;  // Show 3 choices if StressLevel >= 50, otherwise 2
+        return StressLevel >= 50 ? 3 : 2;  // Show 3 choices if StressLevel >= 50, otherwise 2
     }
 }
