@@ -1,0 +1,58 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51fb4c6070f247e48b4377b5728b8182, type: 3}
+  m_Name: 7
+  m_EditorClassIdentifier: 
+  sentences:
+  - text: "\uC774\uAC70 \uB05D\uAE4C\uC9C0 \uBB18\uD558\uAC8C \uC190\uB2D8\uC744
+      \uC57C\uB824\uBCF8\uB2E8 \uB9D0\uC774\uC9C0?"
+    speaker: {fileID: 11400000, guid: eddfe009b49d3484d8dfb5498d6a2f17, type: 2}
+    actions:
+    - speaker: {fileID: 11400000, guid: eddfe009b49d3484d8dfb5498d6a2f17, type: 2}
+      spriteIndex: 0
+      actionType: 0
+      coords: {x: 400, y: 100}
+      moveSpeed: 0
+  - text: "\uB0B4\uAC00 \uCC29\uD574\uC11C \uCE5C\uC808\uD558\uAC8C \uC54C\uB824\uC8FC\uB294
+      \uAC74\uB370, \uC774\uB7F0 \uC11C\uBE44\uC2A4 \uC815\uC2E0\uC774 \uBD80\uC871\uD558\uBA74
+      \uB098\uC911\uC5D0 \uC5B4\uB514 \uC77C \uAD6C\uD558\uAE30\uB3C4 \uC27D\uC9C0
+      \uC54A\uC544\uC694?"
+    speaker: {fileID: 11400000, guid: eddfe009b49d3484d8dfb5498d6a2f17, type: 2}
+    actions:
+    - speaker: {fileID: 11400000, guid: eddfe009b49d3484d8dfb5498d6a2f17, type: 2}
+      spriteIndex: 2
+      actionType: 0
+      coords: {x: 0, y: 0}
+      moveSpeed: 0
+  - text: "\uB0B4\uAC00 \uCC29\uD574\uC11C \uCE5C\uC808\uD558\uAC8C \uC54C\uB824\uC8FC\uB294
+      \uAC74\uB370, \uC774\uB7F0 \uC11C\uBE44\uC2A4 \uC815\uC2E0\uC774 \uBD80\uC871\uD558\uBA74
+      \uB098\uC911\uC5D0 \uC5B4\uB514 \uC77C \uAD6C\uD558\uAE30\uB3C4 \uC27D\uC9C0
+      \uC54A\uC544\uC694?"
+    speaker: {fileID: 11400000, guid: eddfe009b49d3484d8dfb5498d6a2f17, type: 2}
+    actions:
+    - speaker: {fileID: 11400000, guid: eddfe009b49d3484d8dfb5498d6a2f17, type: 2}
+      spriteIndex: 2
+      actionType: 0
+      coords: {x: 0, y: 0}
+      moveSpeed: 0
+  - text: "(\uC190\uB2D8\uC774 \uB300\uCDA9 \uCE74\uC6B4\uD130\uB97C \uD758\uACA8\uBCF4\uB354\uB2C8
+      \uBB50\uB77C \uC911\uC5BC\uAC70\uB9AC\uBA70 \uB5A0\uB09C\uB2E4)"
+    speaker: {fileID: 11400000, guid: eddfe009b49d3484d8dfb5498d6a2f17, type: 2}
+    actions:
+    - speaker: {fileID: 11400000, guid: eddfe009b49d3484d8dfb5498d6a2f17, type: 2}
+      spriteIndex: 3
+      actionType: 3
+      coords: {x: 0, y: 0}
+      moveSpeed: 0
+  background: {fileID: 0}
+  nextScene: {fileID: 11400000, guid: e8723e70d165cfc40ab3f6978e8bf46d, type: 2}
+  TurnonOutput: 0

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0e6a862dae1ccf488ae4d4570f9f88c, type: 3}
+  m_Name: George
+  m_EditorClassIdentifier: 
+  speakerName: "\uC190\uB2D8 1"
+  textColor: {r: 1, g: 0.7098686, b: 0.6289308, a: 1}
+  sprites:
+  - {fileID: 21300000, guid: af700dcb162486745a375cd6745b93a9, type: 3}
+  - {fileID: 21300000, guid: d8451a61ad273ea41aea930d7a205f78, type: 3}
+  - {fileID: 21300000, guid: a6926d53ddcf65f4db2368f41ecc54d3, type: 3}
+  - {fileID: 21300000, guid: b2d7c3f33b7b97b408381612453871c3, type: 3}
+  - {fileID: 21300000, guid: 4671e835321c48444890619be9b38a5c, type: 3}
+  - {fileID: 21300000, guid: 97cab8f500c86c648952c9427faf0475, type: 3}
+  - {fileID: 21300000, guid: 15b5acd80545d7b4cbcf7473e2ac7ebe, type: 3}
+  prefab: {fileID: -400084230080365608, guid: b63e65cd1c58ac24dbd937d543b10442, type: 3}

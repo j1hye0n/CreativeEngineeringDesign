@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faa21d4123d556443abbbad79a10b72f, type: 3}
+  m_Name: 1
+  m_EditorClassIdentifier: 
+  labels:
+  - text: "\uC8C4\uC1A1\uD569\uB2C8\uB2E4. \uC81C\uAC00 \uC54C\uBC14 \uCCAB\uB0A0\uC774\uB77C\uC11C\uC694.
+      \uC5B4\uB514\uC5D0 \uC788\uB098\uC694?"
+    nextScene: {fileID: 11400000, guid: 5a227718f9adde8459ae4099f6eafac6, type: 2}
+  - text: "\uADF8\uAC8C \uC5B4\uB514\uC5D0 \uC788\uB294\uC9C0 \uB9D0\uD574\uC8FC\uC138\uC694\u2026 "
+    nextScene: {fileID: 11400000, guid: 322cc1a5845dec844a3dab162f68e0ff, type: 2}
+  - text: "\uB0B4\uAC00 \uC0AC\uC7A5\uC774\uB2E4, \uC774 \uB300\uBA38\uB9AC\uC57C!!"
+    nextScene: {fileID: 11400000, guid: e49ff8b3e9d38a644b6bb73e0ed39ffa, type: 2}
+  StressLevel: 27

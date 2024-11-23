@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51fb4c6070f247e48b4377b5728b8182, type: 3}
+  m_Name: 8
+  m_EditorClassIdentifier: 
+  sentences:
+  - text: "\uC5B4\uCB48? \uAE30\uC2F8\uC6C0\uD558\uC790\uB294\uAC70\uC57C? \uC774\uAC70?
+      \uAC04\uC774 \uBC30 \uBC16\uC73C\uB85C \uB098\uC654\uB098!"
+    speaker: {fileID: 11400000, guid: eddfe009b49d3484d8dfb5498d6a2f17, type: 2}
+    actions:
+    - speaker: {fileID: 11400000, guid: eddfe009b49d3484d8dfb5498d6a2f17, type: 2}
+      spriteIndex: 4
+      actionType: 0
+      coords: {x: 400, y: 100}
+      moveSpeed: 0
+  - text: "\uB108 \uC774\uB9AC \uC548\uB098\uC640! \uBCF4\uC790\uBCF4\uC790\uD558\uB2C8\uAE4C
+      \uC774\uAC8C!! \uC815\uC2E0\uC774 \uB098\uAC14\uB098!! "
+    speaker: {fileID: 11400000, guid: eddfe009b49d3484d8dfb5498d6a2f17, type: 2}
+    actions:
+    - speaker: {fileID: 11400000, guid: eddfe009b49d3484d8dfb5498d6a2f17, type: 2}
+      spriteIndex: 4
+      actionType: 0
+      coords: {x: 400, y: 100}
+      moveSpeed: 0
+  - text: "(\uC190\uB2D8\uC740 \uD55C\uCC3D \uC2E4\uB791\uC774\uB97C \uD558\uB354\uB2C8,
+      \uB2E4\uB978 \uC190\uB2D8\uC774 \uACA8\uC6B0 \uC911\uC7AC\uD574\uC11C \uC529\uC529\uAC70\uB9AC\uBA70
+      \uD3B8\uC758\uC810\uC744 \uB5A0\uB0AC\uB2E4)"
+    speaker: {fileID: 11400000, guid: 755db819ff1a2ea4aa12594b5b3997b8, type: 2}
+    actions:
+    - speaker: {fileID: 11400000, guid: eddfe009b49d3484d8dfb5498d6a2f17, type: 2}
+      spriteIndex: 5
+      actionType: 3
+      coords: {x: 0, y: 0}
+      moveSpeed: 0
+  - text: "\uD3C9\uC0DD \uB4E4\uC744 \uC695\uC740 \uB2E4 \uB4E4\uC740\uAC83 \uAC19\uC740\uB370,
+      \uB0B4\uAC00 \uADF8\uB807\uAC8C \uC798\uBABB\uD588\uB098?"
+    speaker: {fileID: 11400000, guid: 755db819ff1a2ea4aa12594b5b3997b8, type: 2}
+    actions:
+    - speaker: {fileID: 11400000, guid: eddfe009b49d3484d8dfb5498d6a2f17, type: 2}
+      spriteIndex: 6
+      actionType: 3
+      coords: {x: 0, y: 0}
+      moveSpeed: 0
+  background: {fileID: 0}
+  nextScene: {fileID: 11400000, guid: e8723e70d165cfc40ab3f6978e8bf46d, type: 2}
+  TurnonOutput: 0

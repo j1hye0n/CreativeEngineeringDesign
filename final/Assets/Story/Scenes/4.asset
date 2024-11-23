@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51fb4c6070f247e48b4377b5728b8182, type: 3}
+  m_Name: 4
+  m_EditorClassIdentifier: 
+  sentences:
+  - text: "\uBB50\uC5B4? \uB300\uBA38\uB9AC?! \uBBF8\uCCE4\uB098 \uC774 \uC560XX\uAC00!"
+    speaker: {fileID: 11400000, guid: eddfe009b49d3484d8dfb5498d6a2f17, type: 2}
+    actions:
+    - speaker: {fileID: 11400000, guid: eddfe009b49d3484d8dfb5498d6a2f17, type: 2}
+      spriteIndex: 4
+      actionType: 0
+      coords: {x: 400, y: 100}
+      moveSpeed: 0
+  - text: "\uC0AC\uC7A5\uAC19\uC740 \uC18C\uB9AC \uD558\uACE0 \uC788\uB124! \uB108
+      \uB2F9\uC7A5 \uC77C\uB8E8 \uC548 \uB098\uC640!"
+    speaker: {fileID: 11400000, guid: eddfe009b49d3484d8dfb5498d6a2f17, type: 2}
+    actions:
+    - speaker: {fileID: 11400000, guid: eddfe009b49d3484d8dfb5498d6a2f17, type: 2}
+      spriteIndex: 4
+      actionType: 0
+      coords: {x: 0, y: 0}
+      moveSpeed: 2.5
+  - text: "\uC544! \uC544\uC8FC \uBCC4 \uAF34\uC744 \uB2E4 \uBCF4\uACA0\uC5B4! \uB098\uB54C\uB294
+      \uC9C4\uC9DC \uC190\uB2D8\uC774 \uC655\uC774\uACE0 \uC190\uB2D8\uC774 \uD558\uB298\uC774\uC5C8\uB294\uB370
+      \uC694\uC998 \uC0C8\uD30C\uB780 \uAC83\uB4E4\uC740 \uC6C3\uC5B4\uB978 \uACF5\uACBD\uAC19\uC740
+      \uAC83\uB3C4 \uC5C6\uACE0, \uB0B4\uAC00 \uCC29\uD574\uC11C \uC774\uBC88\uB9CC
+      \uB118\uC5B4\uAC00\uC9C0 \uB108 \uAC19\uC740\uAC74 \uC0AC\uD68C\uC5D0\uC11C
+      \uC544\uC8FC \uB9E4\uC7A5\uC744 \uB2F9\uD574\uC57C \uB3FC! \uC5D0\uD734!"
+    speaker: {fileID: 11400000, guid: 755db819ff1a2ea4aa12594b5b3997b8, type: 2}
+    actions:
+    - speaker: {fileID: 11400000, guid: eddfe009b49d3484d8dfb5498d6a2f17, type: 2}
+      spriteIndex: 4
+      actionType: 0
+      coords: {x: 0, y: 0}
+      moveSpeed: 0
+  background: {fileID: 21300000, guid: c6456afc2b756ff489b1181336270d43, type: 3}
+  nextScene: {fileID: 11400000, guid: 9d5ae215436583a4899f15943ad38648, type: 2}
+  TurnonOutput: 0
