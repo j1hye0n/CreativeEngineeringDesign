@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
 
 public class ChooseController : MonoBehaviour
 {
@@ -24,7 +23,7 @@ public class ChooseController : MonoBehaviour
         }
     }
 
-    // Update StressLevel dynamically during runtime
+    // Dynamically update StressLevel during runtime
     public void UpdateStressLevel(int newStressLevel)
     {
         if (chooseScene != null)
@@ -32,7 +31,7 @@ public class ChooseController : MonoBehaviour
             chooseScene.UpdateStressLevel(newStressLevel);  // Update StressLevel in ChooseScene
             Debug.Log($"StressLevel updated to: {chooseScene.StressLevel}");
 
-            // After updating the StressLevel, refresh the displayed choices
+            // Refresh the displayed choices based on the updated StressLevel
             SetupChoose(chooseScene);
         }
     }
@@ -44,7 +43,7 @@ public class ChooseController : MonoBehaviour
 
         // Get the number of visible choices based on updated StressLevel
         int visibleChoices = scene.GetVisibleChoices();
-        
+
         for (int index = 0; index < visibleChoices; index++)  // Loop based on the visible choices
         {
             ChooseLabelController newLabel = Instantiate(label.gameObject, transform).GetComponent<ChooseLabelController>();
@@ -64,12 +63,13 @@ public class ChooseController : MonoBehaviour
 
     public void PerformChoose(StoryScene scene)
     {
-        gameController.PlayScene(scene);
+        gameController.PlayScene(scene);  // Trigger the GameController to load the chosen StoryScene
         animator.SetTrigger("Hide");
     }
 
     private float CalculateLabelPosition(int labelIndex, int labelCount)
     {
+        // Calculate vertical label positions
         if (labelCount % 2 == 0)
         {
             if (labelIndex < labelCount / 2)
@@ -93,7 +93,7 @@ public class ChooseController : MonoBehaviour
             }
             else
             {
-                return 0;
+                return 0;  // Center position for the middle label
             }
         }
     }
@@ -102,7 +102,7 @@ public class ChooseController : MonoBehaviour
     {
         foreach (Transform childTransform in transform)
         {
-            Destroy(childTransform.gameObject);
+            Destroy(childTransform.gameObject);  // Destroy all existing labels to prevent duplication
         }
     }
 }

@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
@@ -24,11 +23,15 @@ public class GameController : MonoBehaviour
             bottomBar.PlayScene(storyScene);
             backgroundController.SetImage(storyScene.background);
 
-            // Send TurnonOutput value to the server when the scene starts
-            ClientSocket clientSocket = FindObjectOfType<ClientSocket>(); // Ensure there's only one ClientSocket in the scene
-            if (clientSocket != null)
+            // Send TurnonOutput if required
+            if (storyScene.TurnonOutput)
             {
-                clientSocket.SendTurnonOutput(); // Call the method to send TurnonOutput
+                ClientSocket clientSocket = FindObjectOfType<ClientSocket>();
+                if (clientSocket != null)
+                {
+                    clientSocket.TurnonOutput = true;
+                    clientSocket.SendTurnonOutput();
+                }
             }
         }
     }
@@ -76,7 +79,7 @@ public class GameController : MonoBehaviour
         else if (scene is ChooseScene)
         {
             state = State.CHOOSE;
-            chooseController.SetupChoose(scene as ChooseScene);  // Setup the ChooseScene with the new logic
+            chooseController.SetupChoose(scene as ChooseScene);
         }
     }
 }

@@ -52,4 +52,4 @@ MonoBehaviour:
       moveSpeed: 0
   background: {fileID: 0}
   nextScene: {fileID: 11400000, guid: e8723e70d165cfc40ab3f6978e8bf46d, type: 2}
-  TurnonOutput: 0
+  TurnonOutput: 1

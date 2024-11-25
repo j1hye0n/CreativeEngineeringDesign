@@ -3,121 +3,114 @@ using System;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
+using System.Collections;
 
 public class ClientSocket : MonoBehaviour
 {
-    private bool socketReady = false;
-    private TcpClient mySocket;
-    public NetworkStream theStream;
-    private StreamWriter theWriter;
-    private StreamReader theReader;
-    public String Host = "192.168.137.99"; // Ensure this matches the server's IP address
-    public Int32 Port = 12345;
+    private TcpClient socket;
+    private NetworkStream stream;
+    private StreamWriter writer;
+    private StreamReader reader;
+    public string Host = "192.168.137.99";  // Replace with Python server IP
+    public int Port = 12345;
 
-    public int StressLevel = 0;  // The variable to update
-    public bool TurnonOutput = false; // New variable for TurnonOutput
+    public int StressLevel { get; private set; } = 0;
+    public bool TurnonOutput = false;
 
     void Start()
     {
-        setupSocket();
-        if (socketReady)
+        SetupSocket();
+        if (socket.Connected)
         {
-            Debug.Log("Socket set up");
-
-            // Start listening for StressLevelInput updates
-            StartCoroutine(ReceiveStressLevel());
-
-            // Send TurnonOutput value to the server
-            SendTurnonOutput();  // Ensure this is called to send TurnonOutput value
+            Debug.Log("Socket connected");
+            StartCoroutine(ReceiveData());
         }
     }
 
     void OnApplicationQuit()
     {
-        closeSocket();
+        CloseSocket();
     }
 
-    private void setupSocket()
+    private void SetupSocket()
     {
         try
         {
-            mySocket = new TcpClient(Host, Port);
-            theStream = mySocket.GetStream();
-            theWriter = new StreamWriter(theStream);
-            theReader = new StreamReader(theStream);
-            socketReady = true;
+            socket = new TcpClient(Host, Port);
+            stream = socket.GetStream();
+            writer = new StreamWriter(stream);
+            reader = new StreamReader(stream);
         }
         catch (Exception e)
         {
-            Debug.Log("Socket error:" + e);
+            Debug.LogError($"Socket error: {e.Message}");
         }
     }
 
-    private void closeSocket()
+    private void CloseSocket()
     {
-        if (!socketReady) return;
-        theWriter.Close();
-        theReader.Close();
-        mySocket.Close();
-        socketReady = false;
+        if (socket != null)
+        {
+            writer.Close();
+            reader.Close();
+            socket.Close();
+        }
     }
 
-    private System.Collections.IEnumerator ReceiveStressLevel()
+    private IEnumerator ReceiveData()
     {
-        while (socketReady)
+        while (socket.Connected)
         {
             try
             {
-                // Read StressLevelInput from the server
-                Byte[] readBytes = new byte[1024];
-                int numberOfBytesRead = theStream.Read(readBytes, 0, readBytes.Length);
-                string response = Encoding.ASCII.GetString(readBytes, 0, numberOfBytesRead);
-
-                if (int.TryParse(response, out int stressLevelInput))
+                // Read data from Python
+                string received = reader.ReadLine();
+                if (!string.IsNullOrEmpty(received))
                 {
-                    StressLevel = stressLevelInput;  // Update StressLevel
-
-                    // Find all ChooseScene assets and update their StressLevel
-                    ChooseScene[] chooseScenes = Resources.FindObjectsOfTypeAll<ChooseScene>();
-                    foreach (ChooseScene chooseScene in chooseScenes)
+                    var data = JsonUtility.FromJson<StressLevelData>(received);
+                    if (data != null)
                     {
-                        chooseScene.UpdateStressLevel(StressLevel);
+                        StressLevel = data.stresslevel;
+                        Debug.Log($"Received StressLevel: {StressLevel}");
                     }
-
-                    Debug.Log($"Updated StressLevel: {StressLevel}");
-                }
-                else
-                {
-                    Debug.LogWarning("Failed to parse StressLevelInput from server.");
                 }
             }
             catch (Exception e)
             {
-                Debug.LogWarning("Error receiving StressLevelInput: " + e.Message);
+                Debug.LogWarning($"Error receiving data: {e.Message}");
             }
-
-            // Wait for 1 second before the next read
             yield return new WaitForSeconds(1f);
         }
     }
 
-    // New method to send TurnonOutput to the server
     public void SendTurnonOutput()
     {
-        if (socketReady)
+        if (socket.Connected)
         {
             try
             {
-                // Send TurnonOutput value (as a string)
-                string message = TurnonOutput.ToString().ToLower(); // "true" or "false"
-                theWriter.WriteLine(message);
-                theWriter.Flush();
-                Debug.Log($"Sent TurnonOutput: {message}");
+                var message = new TurnonOutputData { turnonoutput = TurnonOutput ? 1 : 0 };
+                string jsonMessage = JsonUtility.ToJson(message);
+                writer.WriteLine(jsonMessage);
+                writer.Flush();
+                Debug.Log($"Sent TurnonOutput: {message.turnonoutput}");
             }
             catch (Exception e)
             {
-                Debug.LogWarning("Error sending TurnonOutput: " + e.Message);
+                Debug.LogWarning($"Error sending data: {e.Message}");
             }
         }
+    }
+
+    [Serializable]
+    private class StressLevelData
+    {
+        public int stresslevel;
+    }
+
+    [Serializable]
+    private class TurnonOutputData
+    {
+        public int turnonoutput;
     }
 }

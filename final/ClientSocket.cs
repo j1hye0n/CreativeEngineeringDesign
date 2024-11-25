@@ -11,8 +11,8 @@ public class ClientSocket : MonoBehaviour
     public NetworkStream theStream;
     private StreamWriter theWriter;
     private StreamReader theReader;
-    public String Host = "192.168.137.99"; // Replace with the server's IP
-    public Int32 Port = 12345;
+    public String Host = "192.168.137.173"; // Replace with the server's IP
+    public Int32 Port = 1234;
 
     public int StressLevel = 0;  // The variable to update
 

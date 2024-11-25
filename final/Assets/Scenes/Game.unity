@@ -496,9 +496,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff69948ed295a7a42ac15ad6e0b60433, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Host: 192.168.137.99
-  Port: 12345
-  StressLevel: 0
+  Host: 192.168.137.173
+  Port: 1234
   TurnonOutput: 0
 --- !u!4 &938303254
 Transform:
