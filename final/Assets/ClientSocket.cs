@@ -3,74 +3,71 @@ using System;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
-using System.Collections;
+using System.Threading;  // For threading
 
 public class ClientSocket : MonoBehaviour
 {
     private TcpClient socket;
     private NetworkStream stream;
-    private StreamWriter writer;
     private StreamReader reader;
-    public string Host = "192.168.137.99";  // Replace with Python server IP
-    public int Port = 12345;
+    private StreamWriter writer;  // Added writer for sending TurnonOutput
+    private Thread clientThread;  // Dedicated thread for Python communication
+    private bool isRunning = true;
 
-    public int StressLevel { get; private set; } = 0;
-    public bool TurnonOutput = false;
+    public string Host = "192.168.137.173";  // Python server IP
+    public int Port = 1234;  // Corrected Port
+
+    public static int StressLevel { get; private set; } = 0;  // Shared StressLevel value
+    public bool TurnonOutput { get; set; } = false;  // Property for TurnonOutput
 
     void Start()
-    {
-        SetupSocket();
-        if (socket.Connected)
-        {
-            Debug.Log("Socket connected");
-            StartCoroutine(ReceiveData());
-        }
-    }
-
-    void OnApplicationQuit()
-    {
-        CloseSocket();
-    }
-
-    private void SetupSocket()
     {
         try
         {
             socket = new TcpClient(Host, Port);
             stream = socket.GetStream();
-            writer = new StreamWriter(stream);
             reader = new StreamReader(stream);
+            writer = new StreamWriter(stream) { AutoFlush = true };  // Initialize writer
+
+            // Start a new thread for receiving data
+            clientThread = new Thread(ReceiveData);
+            clientThread.Start();
         }
         catch (Exception e)
         {
-            Debug.LogError($"Socket error: {e.Message}");
+            Debug.LogError($"Socket setup error: {e.Message}");
         }
     }
 
-    private void CloseSocket()
+    void OnApplicationQuit()
     {
+        isRunning = false;
+
+        if (clientThread != null && clientThread.IsAlive)
+        {
+            clientThread.Abort();
+        }
+
         if (socket != null)
         {
-            writer.Close();
-            reader.Close();
             socket.Close();
         }
     }
 
-    private IEnumerator ReceiveData()
+    private void ReceiveData()
     {
-        while (socket.Connected)
+        while (isRunning)
         {
             try
             {
-                // Read data from Python
-                string received = reader.ReadLine();
+                string received = reader.ReadLine();  // Read data from Python
                 if (!string.IsNullOrEmpty(received))
                 {
+                    // Parse the received JSON
                     var data = JsonUtility.FromJson<StressLevelData>(received);
                     if (data != null)
                     {
-                        StressLevel = data.stresslevel;
+                        StressLevel = data.stresslevel;  // Update StressLevel
                         Debug.Log($"Received StressLevel: {StressLevel}");
                     }
                 }
@@ -79,26 +76,31 @@ public class ClientSocket : MonoBehaviour
             {
                 Debug.LogWarning($"Error receiving data: {e.Message}");
             }
-            yield return new WaitForSeconds(1f);
+
+            // Avoid tight looping
+            Thread.Sleep(100);
         }
     }
 
-    public void SendTurnonOutput()
+    public async void SendTurnonOutputAsync()
     {
-        if (socket.Connected)
+        if (socket != null && socket.Connected)
         {
             try
             {
                 var message = new TurnonOutputData { turnonoutput = TurnonOutput ? 1 : 0 };
-                string jsonMessage = JsonUtility.ToJson(message);
-                writer.WriteLine(jsonMessage);
-                writer.Flush();
-                Debug.Log($"Sent TurnonOutput: {message.turnonoutput}");
+                string jsonMessage = JsonUtility.ToJson(message) + "\n"; // Add \n for Python compatibility
+                await writer.WriteLineAsync(jsonMessage);  // 비동기 송신
+                Debug.Log($"Async Sent TurnonOutput: {message.turnonoutput}");
             }
             catch (Exception e)
             {
-                Debug.LogWarning($"Error sending data: {e.Message}");
+                Debug.LogWarning($"Error sending TurnonOutput asynchronously: {e.Message}");
             }
+        }
+        else
+        {
+            Debug.LogWarning("Socket is not connected. Cannot send TurnonOutput asynchronously.");
         }
     }
 

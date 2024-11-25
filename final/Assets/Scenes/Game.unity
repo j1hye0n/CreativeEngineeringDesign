@@ -498,7 +498,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Host: 192.168.137.173
   Port: 1234
-  TurnonOutput: 0
+  TurnonOutput: 1
 --- !u!4 &938303254
 Transform:
   m_ObjectHideFlags: 0

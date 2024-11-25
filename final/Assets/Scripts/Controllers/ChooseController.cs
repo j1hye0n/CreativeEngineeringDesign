@@ -28,11 +28,13 @@ public class ChooseController : MonoBehaviour
     {
         if (chooseScene != null)
         {
-            chooseScene.UpdateStressLevel(newStressLevel);  // Update StressLevel in ChooseScene
-            Debug.Log($"StressLevel updated to: {chooseScene.StressLevel}");
+            // Update StressLevel and refresh choices
+            chooseScene.UpdateStressLevel(newStressLevel);
 
-            // Refresh the displayed choices based on the updated StressLevel
-            SetupChoose(chooseScene);
+            int visibleChoices = chooseScene.GetVisibleChoices();
+            Debug.Log($"Updated visible choices: {visibleChoices}");
+
+            SetupChoose(chooseScene);  // Refresh the displayed choices
         }
     }
 
@@ -41,10 +43,16 @@ public class ChooseController : MonoBehaviour
         DestroyLabels();
         animator.SetTrigger("Show");
 
-        // Get the number of visible choices based on updated StressLevel
         int visibleChoices = scene.GetVisibleChoices();
+        if (visibleChoices > scene.labels.Count)
+        {
+            Debug.LogError($"Visible choices ({visibleChoices}) exceed available labels ({scene.labels.Count}). Adjusting visible choices to fit available labels.");
+            visibleChoices = scene.labels.Count; // Fallback to avoid out-of-bounds errors
+        }
 
-        for (int index = 0; index < visibleChoices; index++)  // Loop based on the visible choices
+        Debug.Log($"Setting up {visibleChoices} choices based on StressLevel: {scene.StressLevel}");
+
+        for (int index = 0; index < visibleChoices; index++)
         {
             ChooseLabelController newLabel = Instantiate(label.gameObject, transform).GetComponent<ChooseLabelController>();
 

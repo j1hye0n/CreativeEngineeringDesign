@@ -15,18 +15,28 @@ public class ChooseScene : GameScene
         public StoryScene nextScene;
     }
 
-    public int StressLevel = 0;  // Default value, updated manually or dynamically
+    public int StressLevel = 0;  // Default value, dynamically updated
 
-    // Method to update StressLevel at runtime
+    // Update StressLevel at runtime
     public void UpdateStressLevel(int newStressLevel)
     {
         StressLevel = newStressLevel;
-        Debug.Log($"StressLevel for {name} updated to: {StressLevel}");
+        Debug.Log($"StressLevel updated to {StressLevel} for ChooseScene {name}");
     }
 
-    // Function to get the number of choices to display based on StressLevel
+    // Get number of visible choices based on StressLevel
     public int GetVisibleChoices()
     {
-        return StressLevel >= 50 ? 3 : 2;
+        int visibleChoices = StressLevel >= 50 ? 3 : 2;
+        Debug.Log($"StressLevel: {StressLevel}, Visible Choices: {visibleChoices}");
+
+        // Ensure visible choices do not exceed available labels
+        if (visibleChoices > labels.Count)
+        {
+            Debug.LogWarning($"Visible choices ({visibleChoices}) exceed available labels ({labels.Count}). Adjusting.");
+            visibleChoices = labels.Count;
+        }
+
+        return visibleChoices;
     }
 }

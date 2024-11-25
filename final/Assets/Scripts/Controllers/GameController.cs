@@ -3,12 +3,13 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    public GameScene currentScene;
+    public GameScene currentScene;  // Current scene being played
     public BottomBarController bottomBar;
     public SpriteSwitcher backgroundController;
     public ChooseController chooseController;
 
     private State state = State.IDLE;
+    private int lastStressLevel = -1;  // Keep track of the last StressLevel
 
     private enum State
     {
@@ -26,11 +27,12 @@ public class GameController : MonoBehaviour
             // Send TurnonOutput if required
             if (storyScene.TurnonOutput)
             {
+                Debug.Log("TurnonOutput is enabled for this StoryScene.");
                 ClientSocket clientSocket = FindObjectOfType<ClientSocket>();
                 if (clientSocket != null)
                 {
                     clientSocket.TurnonOutput = true;
-                    clientSocket.SendTurnonOutput();
+                    clientSocket.SendTurnonOutputAsync();
                 }
             }
         }
@@ -44,6 +46,7 @@ public class GameController : MonoBehaviour
             {
                 if (bottomBar.IsLastSentence())
                 {
+                    // Trigger scene transition
                     PlayScene((currentScene as StoryScene).nextScene);
                 }
                 else
@@ -52,10 +55,44 @@ public class GameController : MonoBehaviour
                 }
             }
         }
+
+        // Handle data received from Python
+        HandlePythonData();
+    }
+
+    private void HandlePythonData()
+    {
+        // Get StressLevel from ClientSocket
+        int stressLevel = ClientSocket.StressLevel;
+
+        // Log the StressLevel
+        Debug.Log($"Handling StressLevel: {stressLevel} in GameController.");
+
+        // Check if StressLevel has changed
+        if (stressLevel != lastStressLevel)
+        {
+            Debug.Log($"StressLevel changed from {lastStressLevel} to {stressLevel}.");
+            lastStressLevel = stressLevel;
+
+            // Transition logic based on StressLevel
+            if (currentScene is ChooseScene)
+            {
+                ChooseScene chooseScene = currentScene as ChooseScene;
+                chooseController.UpdateStressLevel(stressLevel);  // Update visible choices based on StressLevel
+                Debug.Log($"Updated ChooseScene choices based on StressLevel: {stressLevel}");
+            }
+        }
     }
 
     public void PlayScene(GameScene scene)
     {
+        if (scene == null)
+        {
+            Debug.LogError("Cannot play scene: Scene is null.");
+            return;
+        }
+
+        Debug.Log($"Switching to scene: {scene.name}");
         StartCoroutine(SwitchScene(scene));
     }
 
@@ -65,6 +102,7 @@ public class GameController : MonoBehaviour
         currentScene = scene;
         bottomBar.Hide();
         yield return new WaitForSeconds(1f);
+
         if (scene is StoryScene)
         {
             StoryScene storyScene = scene as StoryScene;
@@ -75,6 +113,18 @@ public class GameController : MonoBehaviour
             yield return new WaitForSeconds(1f);
             bottomBar.PlayScene(storyScene);
             state = State.IDLE;
+
+            // Check TurnonOutput for new StoryScene
+            if (storyScene.TurnonOutput)
+            {
+                Debug.Log("TurnonOutput is enabled for this StoryScene.");
+                ClientSocket clientSocket = FindObjectOfType<ClientSocket>();
+                if (clientSocket != null)
+                {
+                    clientSocket.TurnonOutput = true;
+                    clientSocket.SendTurnonOutputAsync();
+                }
+            }
         }
         else if (scene is ChooseScene)
         {
