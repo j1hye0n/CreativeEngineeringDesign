@@ -20,4 +20,4 @@ MonoBehaviour:
     nextScene: {fileID: 11400000, guid: 322cc1a5845dec844a3dab162f68e0ff, type: 2}
   - text: "\uB0B4\uAC00 \uC0AC\uC7A5\uC774\uB2E4, \uC774 \uB300\uBA38\uB9AC\uC57C!!"
     nextScene: {fileID: 11400000, guid: e49ff8b3e9d38a644b6bb73e0ed39ffa, type: 2}
-  StressLevel: 29
+  StressLevel: 0

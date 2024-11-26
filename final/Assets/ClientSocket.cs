@@ -3,82 +3,99 @@ using System;
 using System.IO;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading;  // For threading
+using System.Threading.Tasks;  // 비동기 처리
 
 public class ClientSocket : MonoBehaviour
 {
     private TcpClient socket;
     private NetworkStream stream;
     private StreamReader reader;
-    private StreamWriter writer;  // Added writer for sending TurnonOutput
-    private Thread clientThread;  // Dedicated thread for Python communication
-    private bool isRunning = true;
+    private StreamWriter writer;
 
-    public string Host = "192.168.137.173";  // Python server IP
-    public int Port = 1234;  // Corrected Port
+    public string Host = "192.168.137.199";  // Python 서버 IP
+    public int Port = 1234;  // 포트 번호
 
-    public static int StressLevel { get; private set; } = 0;  // Shared StressLevel value
-    public bool TurnonOutput { get; set; } = false;  // Property for TurnonOutput
+    [SerializeField] private int stressLevel = 0;  // Inspector와 동기화
+    public int StressLevel
+    {
+        get => stressLevel;
+        private set
+        {
+            stressLevel = value;
+            Debug.Log($"Updated StressLevel in Unity: {stressLevel}");
+        }
+    }
+
+    public bool TurnonOutput { get; set; } = false;  // TurnonOutput 값
+    private bool isReceiving = false;
 
     void Start()
+    {
+        ConnectToServer();
+    }
+
+    void OnApplicationQuit()
+    {
+        DisconnectFromServer();
+    }
+
+    private async void ConnectToServer()
     {
         try
         {
             socket = new TcpClient(Host, Port);
             stream = socket.GetStream();
             reader = new StreamReader(stream);
-            writer = new StreamWriter(stream) { AutoFlush = true };  // Initialize writer
+            writer = new StreamWriter(stream) { AutoFlush = true };
 
-            // Start a new thread for receiving data
-            clientThread = new Thread(ReceiveData);
-            clientThread.Start();
+            Debug.Log("Connected to Python server.");
+
+            // Start receiving StressLevel values asynchronously
+            isReceiving = true;
+            await ReceiveStressLevelAsync();
         }
         catch (Exception e)
         {
-            Debug.LogError($"Socket setup error: {e.Message}");
+            Debug.LogError($"Connection error: {e.Message}");
         }
     }
 
-    void OnApplicationQuit()
+    private void DisconnectFromServer()
     {
-        isRunning = false;
-
-        if (clientThread != null && clientThread.IsAlive)
-        {
-            clientThread.Abort();
-        }
-
+        isReceiving = false;
         if (socket != null)
         {
             socket.Close();
         }
+        Debug.Log("Disconnected from Python server.");
     }
 
-    private void ReceiveData()
+    private async Task ReceiveStressLevelAsync()
     {
-        while (isRunning)
+        while (isReceiving)
         {
             try
             {
-                string received = reader.ReadLine();  // Read data from Python
-                if (!string.IsNullOrEmpty(received))
+                if (reader != null)
                 {
-                    // Parse the received JSON
-                    var data = JsonUtility.FromJson<StressLevelData>(received);
-                    if (data != null)
+                    string received = await reader.ReadLineAsync();
+                    if (!string.IsNullOrEmpty(received))
                     {
-                        StressLevel = data.stresslevel;  // Update StressLevel
-                        Debug.Log($"Received StressLevel: {StressLevel}");
+                        var data = JsonUtility.FromJson<StressLevelData>(received);
+                        if (data != null)
+                        {
+                            StressLevel = data.stresslevel;  // Update StressLevel
+                        }
                     }
                 }
             }
             catch (Exception e)
             {
-                Debug.LogWarning($"Error receiving data: {e.Message}");
+                Debug.LogWarning($"Error receiving StressLevel: {e.Message}");
+                break;  // Exit the loop if there's an error
             }
 
-            // Avoid tight looping
-            Thread.Sleep(100);
+            await Task.Delay(1000);  // 초당 업데이트
         }
     }
 
@@ -89,7 +106,7 @@ public class ClientSocket : MonoBehaviour
             try
             {
                 var message = new TurnonOutputData { turnonoutput = TurnonOutput ? 1 : 0 };
-                string jsonMessage = JsonUtility.ToJson(message) + "\n"; // Add \n for Python compatibility
+                string jsonMessage = JsonUtility.ToJson(message) + "\n"; // Add newline for Python compatibility
                 await writer.WriteLineAsync(jsonMessage);  // 비동기 송신
                 Debug.Log($"Async Sent TurnonOutput: {message.turnonoutput}");
             }

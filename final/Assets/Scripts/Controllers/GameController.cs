@@ -63,7 +63,7 @@ public class GameController : MonoBehaviour
     private void HandlePythonData()
     {
         // Get StressLevel from ClientSocket
-        int stressLevel = ClientSocket.StressLevel;
+        int stressLevel = FindObjectOfType<ClientSocket>()?.StressLevel ?? 0;
 
         // Log the StressLevel
         Debug.Log($"Handling StressLevel: {stressLevel} in GameController.");
