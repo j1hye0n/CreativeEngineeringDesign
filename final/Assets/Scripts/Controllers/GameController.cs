@@ -40,6 +40,8 @@ public class GameController : MonoBehaviour
 
     void Update()
     {
+        HandleStressLevelUpdate();
+
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetMouseButtonDown(0))
         {
             if (state == State.IDLE && bottomBar.IsCompleted())
@@ -55,31 +57,22 @@ public class GameController : MonoBehaviour
                 }
             }
         }
-
-        // Handle data received from Python
-        HandlePythonData();
     }
 
-    private void HandlePythonData()
+    private void HandleStressLevelUpdate()
     {
         // Get StressLevel from ClientSocket
         int stressLevel = FindObjectOfType<ClientSocket>()?.StressLevel ?? 0;
 
-        // Log the StressLevel
-        Debug.Log($"Handling StressLevel: {stressLevel} in GameController.");
-
         // Check if StressLevel has changed
         if (stressLevel != lastStressLevel)
         {
-            Debug.Log($"StressLevel changed from {lastStressLevel} to {stressLevel}.");
             lastStressLevel = stressLevel;
+            Debug.Log($"StressLevel updated in GameController: {stressLevel}");
 
-            // Transition logic based on StressLevel
-            if (currentScene is ChooseScene)
+            if (currentScene is ChooseScene chooseScene)
             {
-                ChooseScene chooseScene = currentScene as ChooseScene;
-                chooseController.UpdateStressLevel(stressLevel);  // Update visible choices based on StressLevel
-                Debug.Log($"Updated ChooseScene choices based on StressLevel: {stressLevel}");
+                chooseScene.UpdateStressLevel(stressLevel);  // Sync StressLevel with ChooseScene
             }
         }
     }
